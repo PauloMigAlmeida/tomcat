@@ -57,4 +57,8 @@ public abstract class SocketProcessorBase<S> implements Runnable {
 
 
     protected abstract void doRun();
+
+    public SocketWrapperBase<S> getSocketWrapper() {
+        return socketWrapper;
+    }
 }

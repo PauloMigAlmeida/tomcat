@@ -18,18 +18,20 @@ package org.apache.catalina.core;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
-import org.apache.tomcat.util.threads.TaskQueue;
+import org.apache.tomcat.util.res.StringManager;
+import org.apache.tomcat.util.threads.TaskPriorityQueue;
 import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
 import java.util.concurrent.TimeUnit;
 
-public class StandardThreadExecutor extends AbstractThreadExecutor {
+public class StandardPriorityThreadExecutor extends AbstractThreadExecutor {
 
-    private TaskQueue taskqueue = null;
+    // ---------------------------------------------- Properties
+    private TaskPriorityQueue taskqueue = null;
 
     // ---------------------------------------------- Constructors
-    public StandardThreadExecutor() {
+    public StandardPriorityThreadExecutor() {
         // empty constructor for the digester
     }
 
@@ -44,7 +46,7 @@ public class StandardThreadExecutor extends AbstractThreadExecutor {
     @Override
     protected void startInternal() throws LifecycleException {
 
-        taskqueue = new TaskQueue(maxQueueSize);
+        taskqueue = new TaskPriorityQueue(maxQueueSize);
         TaskThreadFactory tf = new TaskThreadFactory(namePrefix, daemon, getThreadPriority());
         executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(), maxIdleTime, TimeUnit.MILLISECONDS,
                 taskqueue, tf);
